@@ -50,12 +50,30 @@ rateValidation,
 watchedAtValidation,
  async (req, res) => {
   const response = JSON.parse(await fs.readFile('src/talker.json'));
-  console.log(response);
+  // console.log(response);
   const addNewTalker = ({ ...req.body, id: Number(response.length + 1) });
   response.push(addNewTalker);
-  console.log(response);
+  // console.log(response);
   await fs.writeFile('src/talker.json', JSON.stringify(response));
   return res.status(201).json(addNewTalker);
   });
+
+app.put('/talker/:id',
+tokenValidation,
+nameValidation,
+ageValidation,
+talkValidation,
+rateValidation,
+watchedAtValidation,
+async (req, res) => {
+  const { id } = req.params;
+  const allTalkers = await getRegistered();
+  const getTalker = allTalkers.find((person) => person.id === Number(id));
+  const index = allTalkers.indexOf(getTalker);
+  const newTalker = { id: Number(id), ...req.body };
+  allTalkers[index] = newTalker;
+  await fs.writeFile('src/talker.json', JSON.stringify(allTalkers));
+  return res.status(200).json(newTalker);
+});
 
 module.exports = app; 
