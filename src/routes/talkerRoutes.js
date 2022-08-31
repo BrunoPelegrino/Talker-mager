@@ -11,9 +11,4 @@ const getRegistered = async () => {
   }
 };
 
-const talkers = async () => { 
-  const allTalkers = await getRegistered();
-  return allTalkers;
-};
-
-module.exports = talkers;
+module.exports = getRegistered;
