@@ -76,4 +76,13 @@ async (req, res) => {
   return res.status(200).json(newTalker);
 });
 
+app.delete('/talker/:id', tokenValidation,
+async (req, res) => {
+  const { id } = req.params;
+  const allTalkers = await getRegistered();
+  const getTalker = allTalkers.filter((person) => person.id !== Number(id));
+  await fs.writeFile('src/talker.json', JSON.stringify(getTalker));
+  res.status(204).json(getTalker);
+});
+
 module.exports = app; 
