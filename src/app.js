@@ -18,7 +18,7 @@ app.use(bodyParser.json());
 
 // const fs = require('fs').promises;
 
-app.get('/talker/search/', tokenValidation, async (res, req) => {
+app.get('/talker/search/', tokenValidation, async (req, res) => {
   const { q } = req.query;
   const allTalkers = await getRegistered();
   // console.log(allTalkers);
