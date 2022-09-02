@@ -18,6 +18,17 @@ app.use(bodyParser.json());
 
 // const fs = require('fs').promises;
 
+app.get('/talker/search/', tokenValidation, async (res, req) => {
+  const { q } = req.query;
+  const allTalkers = await getRegistered();
+  // console.log(allTalkers);
+  if (q) {
+  const searchTalker = allTalkers.filter((person) => person.name.includes(q));
+  console.log(searchTalker);
+  return res.status(200).json(searchTalker);
+  } return res.status(200).json(allTalkers);
+  });
+
 app.get('/talker', async (_req, res) => {
   const response = await getRegistered();
   console.log(response);
@@ -56,7 +67,7 @@ watchedAtValidation,
   // console.log(response);
   await fs.writeFile('src/talker.json', JSON.stringify(response));
   return res.status(201).json(addNewTalker);
-  });
+});
 
 app.put('/talker/:id',
 tokenValidation,
